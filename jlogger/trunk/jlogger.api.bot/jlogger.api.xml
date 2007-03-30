@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mosinstall version="1.0.0" type="mambot" group="system">
+        <name>JLogger API</name>
+        <author>Sam Moffatt/Toowoomba City Council</author>
+        <creationDate>December 2006</creationDate>
+        <copyright>(C) 2006 Toowoomba City Council/Sam Moffatt All rights reserved.</copyright                                                                             >
+        <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+        <authorEmail>S.Moffatt@toowoomba.qld.gov.au</authorEmail>
+        <authorUrl>www.toowoomba.qld.gov.au</authorUrl>
+        <version>1.0.0</version>
+        <description>JLogger API Library designed to allow 'loggable' events.</description>
+        <files>
+                <filename mambot="jlogger.api">jlogger.api.php</filename>
+        </files>
+	    <params />
+</mosinstall>

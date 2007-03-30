@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mosinstall type="component" version="1.0">
+	<name>JLogger</name>
+	<creationDate>25/09/2006</creationDate>
+	<author>Sam Moffatt/Toowoomba City Council</author>
+	<copyright>(c) 2006 Sam Moffatt/Toowoomba City Council. All Rights Reserved</copyright>
+	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+	<authorEmail>S.Moffatt@toowoomba.qld.gov.au</authorEmail>
+	<authorUrl>www.toowoomba.qld.gov.au</authorUrl>
+	<version>0.1</version>
+	<description>JLogger is the log viewer component of the JLogger interface. It also doubles to install the relevant database tables.</description>
+	<files /><!-- add <filename>file</filename> here :D -->
+	<install>
+			<queries>
+					<query>
+CREATE TABLE `#__jlogger_entries` (
+  `logid` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  `application` VARCHAR(50) NOT NULL DEFAULT '',
+  `type` VARCHAR(20) NOT NULL DEFAULT 'message', 
+  `priority` ENUM('panic', 'emerg', 'alert', 'crit', 'err', 'error', 'warn', 'warning', 'notice', 'info', 'debug', 'none') NOT NULL DEFAULT 'info',
+  `entrydate` DATETIME,  
+  `message` TEXT NOT NULL DEFAULT '',
+  PRIMARY KEY(`logid`)
+) COMMENT = 'JLogger Log Table';
+					</query>
+			</queries>
+	</install>
+	<uninstall>
+	</uninstall>
+	<administration>
+		<menu>JLogger</menu>
+		<submenu>
+			<menu task="viewlog">View Log</menu>
+			<menu task="configure">Configure</menu> 
+		</submenu>	
+		<files>
+			<filename>admin.jlogger.html.php</filename>
+			<filename>admin.jlogger.php</filename>
+			<filename>connectors.php</filename>
+			<filename>jlogger.class.php</filename>
+		</files>
+	</administration>
+</mosinstall>
