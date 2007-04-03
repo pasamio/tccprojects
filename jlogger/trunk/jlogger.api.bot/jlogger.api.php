@@ -22,8 +22,9 @@
  */
 
 defined('_VALID_MOS') or die('Direct Access not allowed'); 
- 
+
+define('_JLOGGER_API',1);
+
 include($mosConfig_absolute_path . '/administrator/components/com_jlogger/jlogger.class.php');
  
-DEFINE('_JLOGGER_API',1);
 ?>
