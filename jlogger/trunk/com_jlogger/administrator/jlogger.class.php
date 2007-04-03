@@ -45,9 +45,9 @@ class JLogEntry extends mosDBTable {
     }
 }
 
+// Shouldn't require this check but it you never know...
 if(!function_exists(addLogEntry)) {
 	function addLogEntry($application, $type, $priority, $message) {
-		if(defined('_JLOGGER_API')) {
 			global $database;
 			$logentry = new JLogEntry($database);
 			$logentry->application = $application;
@@ -55,7 +55,6 @@ if(!function_exists(addLogEntry)) {
 			$logentry->priority 	= $priority;
 			$logentry->message 	= $message;
 			$logentry->store() or die('Log entry save failed');
-		}
 	}
 }
 ?>
