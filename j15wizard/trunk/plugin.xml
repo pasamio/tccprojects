@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            name="Joomla! 1.5"
+            id="J15Wizard">
+      </category>
+      <wizard
+            name="Joomla! 1.5 Model"
+            icon="icons/sample.gif"
+            category="J15Wizard"
+            class="com.pasamio.eclipse.j15.wizards.J15NewModel"
+            id="com.pasamio.eclipse.j15.wizards.J15NewModel">
+      </wizard>
+      <wizard
+            category="J15Wizard"
+            class="com.pasamio.eclipse.j15.wizards.NewComponentProjectWizard"
+            icon="icons/sample.gif"
+            id="com.pasamio.eclipse.j15.wizards.NewComponentProjectWizard"
+            name="Joomla! 1.5 Component"
+            project="true">
+      </wizard>	  
+   </extension>
+
+</plugin>

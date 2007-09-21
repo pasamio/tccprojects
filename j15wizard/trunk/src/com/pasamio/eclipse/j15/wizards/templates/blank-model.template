@@ -1,0 +1,21 @@
+<?php
+/**
+ * ${docdescription}
+ *  
+ * 
+ * PHP ${phpver}
+ *  
+ * Created on ${date}
+ * 
+ * @package ${package_name}
+ * @author ${name} <${email}>  
+ * @copyright ${year} ${name}
+ * @version SVN: $Id:$
+ */
+ 
+ // no direct access
+ defined(_JEXEC) or die('Access Denied');
+ 
+ 
+ 
+ ?>
