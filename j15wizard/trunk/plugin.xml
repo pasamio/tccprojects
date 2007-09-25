@@ -15,6 +15,13 @@
             class="com.pasamio.eclipse.j15.wizards.J15NewModel"
             id="com.pasamio.eclipse.j15.wizards.J15NewModel">
       </wizard>
+	  <wizard
+            name="Joomla! 1.5 Controller"
+            icon="icons/sample.gif"
+            category="J15Wizard"
+            class="com.pasamio.eclipse.j15.wizards.J15NewController"
+            id="com.pasamio.eclipse.j15.wizards.J15NewController">
+      </wizard>
       <wizard
             category="J15Wizard"
             class="com.pasamio.eclipse.j15.wizards.NewComponentProjectWizard"

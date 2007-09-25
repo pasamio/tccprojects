@@ -156,29 +156,112 @@ IExecutableExtension {
 			IContainer container = (IContainer) proj;
 
 			/* Add an XHTML file */
-			addFileToProject(container, new Path("index.html"),
+			/*addFileToProject(container, new Path("index.html"),
 					J15NewModel.openContentStream("Welcome to "
-							+ proj.getName(),"5"),monitor);
+							+ proj.getName(),"5"),monitor);*/
 
-			/* Add the style folder and the site.css file to it */
-			final IFolder styleFolder = container.getFolder(new Path("styles"));
-			styleFolder.create(true, true, monitor);
+			/* Create the admin folder */
+			final IFolder adminFolder = container.getFolder(new Path("admin"));
+			adminFolder.create(true, true, monitor);
+			
+			final IFolder adminModels = adminFolder.getFolder(new Path("models"));
+			adminModels.create(true, true, monitor);
+			
+			final IFolder adminControllers = adminFolder.getFolder(new Path("controllers"));
+			adminControllers.create(true, true, monitor);
+			
+			final IFolder adminViews = adminFolder.getFolder(new Path("views"));
+			adminViews.create(true, true, monitor);
+			
+			final IFolder adminTables = adminFolder.getFolder(new Path("tables"));
+			adminTables.create(true, true, monitor);
+			
+			/* Create the site folder */
+			final IFolder siteFolder = container.getFolder(new Path("site"));
+			siteFolder.create(true, true, monitor);
+			
+			final IFolder siteModels = siteFolder.getFolder(new Path("models"));
+			siteModels.create(true, true, monitor);
+			
+			final IFolder siteViews = siteFolder.getFolder(new Path("views"));
+			siteViews.create(true, true, monitor);
 
 			InputStream resourceStream = this.getClass().getResourceAsStream(
-					"templates/site-css-template.resource");
+					"templates/blank-html.template");
 
-			addFileToProject(container, new Path(styleFolder.getName()
-					+ Path.SEPARATOR + "style.css"),
+			/* Add blank HTML Files */
+			
+			/* Admin Folders first */
+			addFileToProject(container, new Path(adminFolder.getName()
+					+ Path.SEPARATOR + "index.html"),
 					resourceStream, monitor);
+			
+			resourceStream.close();
+			resourceStream = this.getClass().getResourceAsStream(
+				"templates/blank-html.template");
+			
+			addFileToProject(container, new Path(adminFolder.getName()
+					+ Path.SEPARATOR + adminModels.getName()
+					+ Path.SEPARATOR + "index.html"),
+					resourceStream, monitor);
+			
+			resourceStream.close();
+			resourceStream = this.getClass().getResourceAsStream(
+				"templates/blank-html.template");
+			
+			addFileToProject(container, new Path(adminFolder.getName()
+					+ Path.SEPARATOR + adminControllers.getName()
+					+ Path.SEPARATOR + "index.html"),
+					resourceStream, monitor);
+			
+			resourceStream.close();
+			resourceStream = this.getClass().getResourceAsStream(
+				"templates/blank-html.template");
+			
+			addFileToProject(container, new Path(adminFolder.getName()
+					+ Path.SEPARATOR + adminViews.getName()
+					+ Path.SEPARATOR + "index.html"),
+					resourceStream, monitor);
+			
+			resourceStream.close();
+			resourceStream = this.getClass().getResourceAsStream(
+				"templates/blank-html.template");
+			
+			addFileToProject(container, new Path(adminFolder.getName()
+					+ Path.SEPARATOR + adminTables.getName()
+					+ Path.SEPARATOR + "index.html"),
+					resourceStream, monitor);
+			
+			resourceStream.close();
+			resourceStream = this.getClass().getResourceAsStream(
+				"templates/blank-html.template");
+			
+			/* Now the site folders */
+			addFileToProject(container, new Path(siteFolder.getName()
+					+ Path.SEPARATOR + "index.html"),
+					resourceStream, monitor);
+			
+			resourceStream.close();
+			resourceStream = this.getClass().getResourceAsStream(
+				"templates/blank-html.template");
+			
+			addFileToProject(container, new Path(siteFolder.getName()
+					+ Path.SEPARATOR + siteModels.getName()
+					+ Path.SEPARATOR + "index.html"),
+					resourceStream, monitor);
+			
+			resourceStream.close();
+			resourceStream = this.getClass().getResourceAsStream(
+				"templates/blank-html.template");
 
+			addFileToProject(container, new Path(siteFolder.getName()
+					+ Path.SEPARATOR + siteViews.getName()
+					+ Path.SEPARATOR + "index.html"),
+					resourceStream, monitor);
+			
 			resourceStream.close();
 
-			/*
-			 * Add the images folder, which is an official Exmample.com standard
-			 * for static web projects.
-			 */
-			IFolder imageFolder = container.getFolder(new Path("images"));
-			imageFolder.create(true, true, monitor);
+			/* All over! */
 		} catch (IOException ioe) {
 			IStatus status = new Status(IStatus.ERROR, "J15Wizard", IStatus.OK,
 					ioe.getLocalizedMessage(), null);
@@ -196,6 +279,7 @@ IExecutableExtension {
 	 */
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
         this.selection = selection;
+        selection = this.selection;
         this.workbench = workbench;
 	}
 
