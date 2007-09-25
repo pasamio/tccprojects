@@ -16,8 +16,7 @@
 // no direct access
 defined(_JEXEC) or die('Access Denied');
  
-jimport('joomla.application.component.model');
- 
-${content}
+// Require the base controller
+require_once (JPATH_COMPONENT.DS.'controller.php');
  
  ?>
