@@ -7,7 +7,7 @@
         <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
         <authorEmail>S.Moffatt@toowoomba.qld.gov.au</authorEmail>
         <authorUrl>www.toowoomba.qld.gov.au</authorUrl>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
         <description>JLogger API Library designed to allow 'loggable' events.</description>
         <files>
                 <filename mambot="jlogger.api">jlogger.api.php</filename>
