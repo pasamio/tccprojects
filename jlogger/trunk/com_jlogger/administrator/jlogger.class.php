@@ -46,7 +46,7 @@ class JLogEntry extends mosDBTable {
 }
 
 // Shouldn't require this check but it you never know...
-if(!function_exists(addLogEntry)) {
+if(!function_exists('addLogEntry')) {
 	function addLogEntry($application, $type, $priority, $message) {
 			global $database;
 			$logentry = new JLogEntry($database);
