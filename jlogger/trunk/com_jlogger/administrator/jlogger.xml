@@ -36,7 +36,6 @@ CREATE TABLE `#__jlogger_entries` (
 		<files>
 			<filename>admin.jlogger.html.php</filename>
 			<filename>admin.jlogger.php</filename>
-			<filename>connectors.php</filename>
 			<filename>jlogger.class.php</filename>
 		</files>
 	</administration>
