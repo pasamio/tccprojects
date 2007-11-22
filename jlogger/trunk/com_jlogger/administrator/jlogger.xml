@@ -7,7 +7,7 @@
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<authorEmail>S.Moffatt@toowoomba.qld.gov.au</authorEmail>
 	<authorUrl>www.toowoomba.qld.gov.au</authorUrl>
-	<version>0.1</version>
+	<version>1.0.1</version>
 	<description>JLogger is the log viewer component of the JLogger interface. It also doubles to install the relevant database tables.</description>
 	<files /><!-- add <filename>file</filename> here :D -->
 	<install>
