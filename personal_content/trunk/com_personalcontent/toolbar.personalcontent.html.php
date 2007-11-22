@@ -1,6 +1,6 @@
 <?php
 /**
-* Selected Newsflash toolbar - HTML
+* Personal Content toolbar - HTML
 * @author Samuel Moffatt <pasamio@pasamio.id.au>
 * @copyright Copyright (C) 2006 Samuel Moffatt. All rights reserved
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
@@ -12,9 +12,6 @@ defined( '_VALID_MOS' ) or die( 'Restricted access' );
 class TOOLBAR_personalcontent  {
 	function _DEFAULT() {
 		mosMenuBar::startTable();
-		mosMenuBar::publishList();
-		mosMenuBar::spacer();
-		mosMenuBar::unpublishList();
 		mosMenuBar::spacer();
 		mosMenuBar::deleteList();
 		mosMenuBar::spacer();

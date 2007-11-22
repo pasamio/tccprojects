@@ -12,4 +12,8 @@
 	<files>
 		<filename module="mod_personal_content">mod_personal_content.php</filename>
 	</files>
+	<params>
+		<param name="default_cid" type="text" size="5" default="" label="Default Content Item" description="This is a content item to display when there is no other option for a logged in user. This will default to the anonymous setting if this is not set." />
+		<param name="anonymous_cid" type="text" size="5" default="" label="Anonymous Content Item" description="This is a content item to display when there is no one logged in." />
+	</params>
 </mosinstall>

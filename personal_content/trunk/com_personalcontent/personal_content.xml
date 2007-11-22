@@ -16,7 +16,7 @@
 CREATE TABLE `#__personal_content` (
   `uid`		INT(12) NOT NULL,
   `cid`		INT(12) NOT NULL,
-  PRIMARY KEY(`uid`,`cid`)
+  PRIMARY KEY(`uid`)
 ) COMMENT = 'Personal Content Manager Table';
 					</query>
 			</queries>
