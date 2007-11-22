@@ -114,7 +114,7 @@ function edit( $uid, $option ) {
 	$row = new pasPersonalContent($database);
 	$row->load($uid);
 	xajaxstart();
-	$users =  mosAdminMenus::UserSelect( 'uid', $row->uid );
+	$users =  mosAdminMenus::UserSelect( 'uid', $row->uid, 1, null, 'name', 0 );
 	HTML_personalcontent::newPersonalContent($option,$row, $users);
 }
 
@@ -134,7 +134,7 @@ function newPersonalContent( $option ) {
 		
 	xajaxstart();
 	$row = new pasPersonalContent($database);
-	$users =  mosAdminMenus::UserSelect( 'uid', $row->uid );
+	$users =  mosAdminMenus::UserSelect( 'uid', $row->uid, 1, null, 'name', 0 );
 	HTML_personalcontent::newPersonalContent( $option, $row, $users );
 	
 }
