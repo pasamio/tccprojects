@@ -35,9 +35,8 @@ DROP TABLE `#__personal_content`;
 			<filename>admin.personalcontent.php</filename>
 			<filename>index.html</filename>
 			<filename>personalcontent.class.php</filename>
-			<filename>personalcontent.xml</filename>
 			<filename>toolbar.personalcontent.html.php</filename>
-			<filename>toolbar.personalcontent.php</filename>
+			<filename>toolbar.personalcontent.php</filename>			
 		</files>
 	</administration>
 </mosinstall>
