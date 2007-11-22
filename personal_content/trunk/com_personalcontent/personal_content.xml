@@ -22,12 +22,22 @@ CREATE TABLE `#__personal_content` (
 			</queries>
 	</install>
 	<uninstall>
+		<queries>
+			<query>
+DROP TABLE `#__personal_content`;
+			</query>
+		</queries>			
 	</uninstall>
 	<administration>
 		<menu>Personal Content</menu>
 		<files>
-			<filename>admin.personal_content.php</filename>
-			<filename>admin.personal_content.html.php</filename>			
+			<filename>admin.personalcontent.html.php</filename>
+			<filename>admin.personalcontent.php</filename>
+			<filename>index.html</filename>
+			<filename>personalcontent.class.php</filename>
+			<filename>personalcontent.xml</filename>
+			<filename>toolbar.personalcontent.html.php</filename>
+			<filename>toolbar.personalcontent.php</filename>
 		</files>
 	</administration>
 </mosinstall>
