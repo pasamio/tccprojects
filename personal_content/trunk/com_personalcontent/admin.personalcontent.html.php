@@ -27,7 +27,7 @@ defined( '_VALID_MOS' ) or die( 'Restricted access' );
 * @subpackage Newsfeeds
 */
 class HTML_personalcontent {
-
+	
 	function showSelection( &$rows, &$lists, $pageNav, $option ) {
 		global $my;
 
@@ -37,7 +37,7 @@ class HTML_personalcontent {
 		<table class="adminheading">
 		<tr>
 			<th>
-			Selected Newsflash Manager
+			Personal Content Manager
 			</th>
 		</tr>
 		</table>
@@ -51,25 +51,24 @@ class HTML_personalcontent {
 			<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $rows ); ?>);" />
 			</th>
 			<th class="title">
+				User
+			</th>
+			<th class="title">
 				Article Title
 			</th>
-			<th width="5%">
-			Published
-			</th>
-
 		</tr>
 		<?php
 		$k = 0;
 		for ($i=0, $n=count( $rows ); $i < $n; $i++) {
 			$row = &$rows[$i];
 
-			$link 	= 'index2.php?option=com_newsfeeds&task=editA&hidemainmenu=1&id='. $row->id;
+			$link 	= 'index2.php?option=com_newsfeeds&task=editA&hidemainmenu=1&uid='. $row->uid;
 
-			$img 	= $row->published ? 'tick.png' : 'publish_x.png';
+/*			$img 	= $row->published ? 'tick.png' : 'publish_x.png';
 			$task 	= $row->published ? 'unpublish' : 'publish';
 			$alt 	= $row->published ? 'Published' : 'Unpublished';
-			
-			$checked = '<input id="cb'.$i.'" name="cid[]" value="'.$row->id.'" onclick="isChecked(this.checked);" type="checkbox">';
+*/			
+			$checked = '<input id="cb'.$i.'" name="cid[]" value="'.$row->uid.'" onclick="isChecked(this.checked);" type="checkbox">';
 			?>
 			<tr class="<?php echo 'row'. $k; ?>">
 				<td align="center">
@@ -78,13 +77,12 @@ class HTML_personalcontent {
 				<td>
 				<?php echo $checked; ?>
 				</td>
+				<td><a href="index2.php?option=com_personalcontent&task=edit&uid=<?php echo $row->uid ?>">
+					<?php echo $row->username ? $row->username : 'Anonymous' ?>
+					</a>
+				</td>
 				<td>
 					<?php echo $row->title; ?>
-				</td>
-				<td width="10%" align="center">
-				<a href="javascript: void(0);" onclick="return listItemTask('cb<?php echo $i;?>','<?php echo $task;?>')">
-				<img src="images/<?php echo $img;?>" border="0" alt="<?php echo $alt; ?>" />
-				</a>
 				</td>
 			</tr>
 			<?php
@@ -102,7 +100,7 @@ class HTML_personalcontent {
 		<?php
 	}
 	
-	function newNewsflash( $option ) {
+	function newPersonalContent( $option, $row, $users ) {
 		?>
 	        <script language="JavaScript">
 			// This code was a quick mock up to test AJAX integration in a Joomla framework (mambots)
@@ -123,7 +121,7 @@ class HTML_personalcontent {
 				}
 				//If the form data is *not* blank, query the DB and return the results
 				if(theQuery !== "") {
-					xajax_ajaxDoArticleSearch(theQuery);
+					xajax_ajaxDoArticleSearch(theQuery,'cid');
 				} else {
 			//                xajax_ajaxDoArticleSearch("%");
 				}
@@ -135,7 +133,7 @@ class HTML_personalcontent {
 		<table class="adminheading">
 		<tr>
 			<th>
-			Select new Newsflash
+			Select new content item
 			</th>
 		</tr>
 		</table>
@@ -150,17 +148,18 @@ class HTML_personalcontent {
 			Content ID:
 			</td>
 			<td>
-			<input class="inputbox" type="text" size="40" id="contentid" name="contentid" value="">
+			<input class="inputbox" type="text" size="40" id="cid" name="cid" value="<?php echo $row->cid ?>"> 
 			</td>
 		</tr>
 		<tr>
 			<td>
-			Published:
+			User ID:
 			</td>
 			<td>
-			<input type="checkbox" class="inputbox" name="published">
+			<?php echo $users ?>
+			<!-- <input class="inputbox" type="text" size="40" id="uid" name="uid" value="<?php echo $row->uid ?>"> -->
 			</td>
-		</tr>
+		</tr>		
 		<tr>				
 		</table>
 				

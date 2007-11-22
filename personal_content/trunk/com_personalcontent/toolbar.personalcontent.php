@@ -1,6 +1,6 @@
 <?php
 /**
-* Selected Newsflash Toolbar -  Logic
+* Personal Content Toolbar -  Logic
 * @author Samuel Moffatt <pasamio@pasamio.id.au>
 * @copyright Copyright (C) 2006 Samuel Moffatt. All rights reserved
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
@@ -13,6 +13,7 @@ require_once( $mainframe->getPath( 'toolbar_html' ) );
 
 switch ($task) {
 	case 'new':
+	case 'edit':
 		TOOLBAR_personalcontent::_NEW();
 		break;
 

@@ -23,22 +23,45 @@ defined('_VALID_MOS') or die( 'Cant touch this!' );
 
 $database->setQuery('SELECT cid FROM #__personal_content WHERE uid = '. $my->id);
 $result = intval($database->loadResult());
+$default = $params->get( 'default_cid', 0 );
+$anon = $params->get( 'anonymous_cid', 0 );
+
+// Generic set up
+require_once( $mainframe->getPath( 'front_html', 'com_content') );
+$params->set( 'intro_only', 1 );
+$params->set( 'hide_author', 1 );
+$params->set( 'hide_createdate', 1 );
+$params->set( 'hide_modifydate', 1 );
+$params->set( 'readmore', 1 );
+$params->set( 'item_title', 1 );
+$params->set( 'pageclass_sfx', $params->get( 'moduleclass_sfx' ) );
+$access = new stdClass();
+$access->canEdit 	= 0;
+$access->canEditOwn = 0;
+$access->canPublish = 0;
+$row = new mosContent( $database );
+
 if($result) {
 	// Display content
-	require_once( $mainframe->getPath( 'front_html', 'com_content') );
-	$params->set( 'intro_only', 1 );
-	$params->set( 'hide_author', 1 );
-	$params->set( 'hide_createdate', 1 );
-	$params->set( 'hide_modifydate', 1 );
-	$params->set( 'readmore', 1 );
-	$params->set( 'item_title', 1 );
-	$params->set( 'pageclass_sfx', $params->get( 'moduleclass_sfx' ) );
-	$access = new stdClass();
-	$access->canEdit 	= 0;
-	$access->canEditOwn = 0;
-	$access->canPublish = 0;
-	$row = new mosContent( $database );
+	
 	$row->load( $result );
+	$row->text = $row->introtext;
+	$row->groups = '';
+	$row->readmore = 1;
+	HTML_content::show( $row, $params, $access, 0, 'com_content' );
+} else if($my->id && ($default || $anon)) {
+	if($default) {
+		$row->load( $default );
+	} else {
+		$row->load( $anon );
+	}
+		
+	$row->text = $row->introtext;
+	$row->groups = '';
+	$row->readmore = 1;
+	HTML_content::show( $row, $params, $access, 0, 'com_content' );
+} else if($anon) {
+	$row->load( $anon );
 	$row->text = $row->introtext;
 	$row->groups = '';
 	$row->readmore = 1;

@@ -3,6 +3,7 @@
  * Personal Content System
  * 
  * This handles the main logic of the application 
+ * Code borrowed from Sam Moffatt's Selected Newsflash System
  * 
  * PHP4/5
  *  
@@ -25,9 +26,9 @@ defined('_VALID_MOS') or die('Direct access to this location is not permitted');
 require_once( $mainframe->getPath( 'admin_html' ) );
 require_once( $mainframe->getPath( 'class' ) );
 
-$task 	= mosGetParam( $_REQUEST, 'task', array(0) );
+$task 	= mosGetParam( $_REQUEST, 'task', '' );
 $cid 	= mosGetParam( $_POST, 'cid', array(0) );
-$id 	= mosGetParam( $_GET, 'id', 0 );
+$uid 	= mosGetParam( $_GET, 'uid', 0 );
 if (!is_array( $cid )) {
 	$cid = array(0);
 }
@@ -35,25 +36,29 @@ if (!is_array( $cid )) {
 switch ($task) {
 
 	case 'new':
-		newNewsflash( $option );
+		newPersonalContent( $option );
 		break;
 
 	case 'save':
-		saveNewsflash( $option );
+		savePersonalContent( $option );
 		break;
 
 	case 'publish':
-		publishNewsflash( $cid, 1, $option );
+		publishPersonalContent( $cid, 1, $option );
 		break;
 
 	case 'unpublish':
-		publishNewsflash( $cid, 0, $option );
+		publishPersonalContent( $cid, 0, $option );
 		break;
 
 	case 'remove':
-		removeNewsflash( $cid, $option );
+		removePersonalContent( $cid, $option );
 		break;
-
+	
+	case 'edit':
+		edit($uid, $option);
+		break;
+		
 	default:
 		showSelection( $option );
 		break;
@@ -72,7 +77,7 @@ function showSelection( $option ) {
 
 	// get the total number of records
 	
-	$query = "SELECT COUNT(*) FROM #__selectednewsflash";
+	$query = "SELECT COUNT(*) FROM #__personal_content";
 	$database->setQuery( $query );
 	$total = $database->loadResult();
 
@@ -80,13 +85,13 @@ function showSelection( $option ) {
 	$pageNav = new mosPageNav( $total, $limitstart, $limit );
 
 	// get the subset (based on limits) of required records
-	$query = "SELECT b.id, b.contentid, a.title, b.published"
+	$query = "SELECT b.uid, b.cid, a.title, c.username"
 		."\n FROM #__content AS a"
-		."\n INNER JOIN #__selectednewsflash AS b ON b.contentid = a.id"
+		."\n INNER JOIN #__personal_content AS b ON b.cid = a.id"
+		."\n LEFT JOIN #__users AS c ON b.uid = c.id"
 		."\n WHERE state != 0"
 		."\n ORDER BY a.ordering"
 		. "\n LIMIT $pageNav->limitstart, $pageNav->limit";
-
 	
 	$database->setQuery( $query );
 
@@ -97,20 +102,40 @@ function showSelection( $option ) {
 	}
 
 
-	HTML_selectednewsflash::showSelection( $rows, $lists, $pageNav, $option );
+	HTML_personalcontent::showSelection( $rows, $lists, $pageNav, $option );
+}
+
+/**
+* Edits a records
+* @param string The current GET/POST option
+*/
+function edit( $uid, $option ) {
+	global $database, $mainframe;
+	$row = new pasPersonalContent($database);
+	$row->load($uid);
+	xajaxstart();
+	$users =  mosAdminMenus::UserSelect( 'uid', $row->uid );
+	HTML_personalcontent::newPersonalContent($option,$row, $users);
+}
+
+function xajaxstart() {
+	global $mosConfig_absolute_path;
+	// Sam Moffatt's AJAX Server Framework (based on XAJAX)
+	include $mosConfig_absolute_path . '/administrator/components/com_ajaxserver/ajax/includes/xajax.common.php';
+	ajax_generateServer($server);
+	$server->printJavaScript();
 }
 
 /**
 * Creates a new record
 */
-function newNewsflash( $option ) {
+function newPersonalContent( $option ) {
 	global $database, $mainframe, $my, $mosConfig_absolute_path, $mosConfig_offset;
 		
-	// Sam Moffatt's AJAX Server Framework (based on XAJAX)
-	include $mosConfig_absolute_path . '/administrator/components/com_ajaxserver/ajax/includes/xajax.common.php';
-	ajax_generateServer($server);
-	$server->printJavaScript();
-	HTML_selectednewsflash::newNewsflash( $option );
+	xajaxstart();
+	$row = new pasPersonalContent($database);
+	$users =  mosAdminMenus::UserSelect( 'uid', $row->uid );
+	HTML_personalcontent::newPersonalContent( $option, $row, $users );
 	
 }
 
@@ -118,19 +143,13 @@ function newNewsflash( $option ) {
 * Saves the record from an edit form submit
 * @param string The current GET/POST option
 */
-function saveNewsflash( $option ) {
+function savePersonalContent( $option ) {
 	global $database, $my;	
 
-	$row = new pasSelectedNewsflash( $database );
+	$row = new paspersonalcontent( $database );
 	if (!$row->bind( $_POST )) {
 		echo "<script> alert('".$row->getError()."'); window.history.go(-1); </script>\n";
 		exit();
-	}
-
-	if($row->published == 'on') {
-		$row->published = 1;
-	} else {
-		$row->published = 0;
 	}
 	
 	// save the changes
@@ -138,46 +157,16 @@ function saveNewsflash( $option ) {
 		echo "<script> alert('".$row->getError()."'); window.history.go(-1); </script>\n";
 		exit();
 	}
-
 	mosRedirect( 'index2.php?option='. $option );
 }
 
-/**
-* Publishes or Unpublishes one or more modules
-* @param array An array of unique category id numbers
-* @param integer 0 if unpublishing, 1 if publishing
-* @param string The current GET/POST option
-*/
-function publishNewsflash( $cid, $publish, $option ) {
-	global $database, $my;
-
-	if (count( $cid ) < 1) {
-		$action = $publish ? 'publish' : 'unpublish';
-		echo "<script> alert('Select a module to $action'); window.history.go(-1);</script>\n";
-		exit;
-	}
-
-	$cids = implode( ',', $cid );
-
-	$query = "UPDATE #__selectednewsflash"
-	. "\n SET published = ". intval( $publish )
-	. "\n WHERE id IN ( $cids )"	
-	;
-	$database->setQuery( $query );
-	if (!$database->query()) {
-		echo "<script> alert('".$database->getErrorMsg()."'); window.history.go(-1); </script>\n";
-		exit();
-	}
-
-	mosRedirect( 'index2.php?option='. $option );
-}
 
 /**
 * Removes records
 * @param array An array of id keys to remove
 * @param string The current GET/POST option
 */
-function removeNewsflash( &$cid, $option ) {
+function removePersonalContent( &$cid, $option ) {
 	global $database;
 
 	if (!is_array( $cid ) || count( $cid ) < 1) {
@@ -186,8 +175,8 @@ function removeNewsflash( &$cid, $option ) {
 	}
 	if (count( $cid )) {
 		$cids = implode( ',', $cid );
-		$query = "DELETE FROM #__selectednewsflash"
-		. "\n WHERE id IN ( $cids )"		
+		$query = "DELETE FROM #__personal_content"
+		. "\n WHERE uid IN ( $cids )"		
 		;
 		
 		$database->setQuery( $query );		
