@@ -3,6 +3,7 @@
  * Personal Content Manager - HTML Renderer
  * 
  * This file contains the HTML rendering classes 
+ * Code borrowed from Sam Moffatt's Selected Newsflash extension
  * 
  * PHP4/5
  *  
