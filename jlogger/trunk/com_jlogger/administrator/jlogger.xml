@@ -31,7 +31,7 @@ CREATE TABLE `#__jlogger_entries` (
 		<menu>JLogger</menu>
 		<submenu>
 			<menu task="viewlog">View Log</menu>
-			<menu task="configure">Configure</menu> 
+			<!--<menu task="configure">Configure</menu>--> 
 		</submenu>	
 		<files>
 			<filename>admin.jlogger.html.php</filename>
