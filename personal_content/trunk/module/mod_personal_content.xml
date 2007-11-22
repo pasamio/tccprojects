@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mosinstall type="module" version="1.0">
+	<name>Personal Content Module</name>
+	<creationDate>25/09/2006</creationDate>
+	<author>Sam Moffatt/Toowoomba City Council</author>
+	<copyright>(c) 2006 Sam Moffatt/Toowoomba City Council. All Rights Reserved</copyright>
+	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+	<authorEmail>S.Moffatt@toowoomba.qld.gov.au</authorEmail>
+	<authorUrl>www.toowoomba.qld.gov.au</authorUrl>
+	<version>0.1</version>
+	<description>The personal content module displays a content item based on the user.</description>
+	<files>
+		<filename module="mod_personal_content">mod_personal_content.php</filename>
+	</files>
+</mosinstall>
