@@ -23,18 +23,23 @@ class pasPersonalContent extends mosDBTable {
 	}
 	
 	function store( $updateNulls=false ) {
-		$this->_db->setQuery('SELECT cid FROM #__personal_content WHERE uid = '. $this->uid );
-		$result = intval($this->_db->loadResult());
-		if($result) { 
-			$ret = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_key, $updateNulls);
+		if($this->cid) {
+			$this->_db->setQuery('SELECT uid FROM #__personal_content WHERE uid = '. $this->uid );
+			$result = intval($this->_db->loadResult());
+			if($result) { 
+				$ret = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_key, $updateNulls);
+			} else {
+				$ret = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
+			}
+			
+			if (!$ret) {
+				$this->_error = strtolower(get_class($this))."::store failed <br />" . $this->_db->getErrorMsg();
+				return false;
+			} else {
+				return true;
+			}
 		} else {
-			$ret = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
-		}
-		
-		if (!$ret) {
-			$this->_error = strtolower(get_class($this))."::store failed <br />" . $this->_db->getErrorMsg();
-			return false;
-		} else {
+			$this->delete($this->uid);
 			return true;
 		}
 	}
