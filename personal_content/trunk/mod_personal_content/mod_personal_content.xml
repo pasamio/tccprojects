@@ -7,7 +7,7 @@
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<authorEmail>S.Moffatt@toowoomba.qld.gov.au</authorEmail>
 	<authorUrl>www.toowoomba.qld.gov.au</authorUrl>
-	<version>0.1</version>
+	<version>1.0.2</version>
 	<description>The personal content module displays a content item based on the user.</description>
 	<files>
 		<filename module="mod_personal_content">mod_personal_content.php</filename>

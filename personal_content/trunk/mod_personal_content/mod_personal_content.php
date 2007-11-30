@@ -9,7 +9,7 @@
  *  
  * Created on Nov 22, 2007
  * 
- * @package PersonalContent
+ * @package Personal-Content
  * @subpackage Module
  * @author Sam Moffatt <s.moffatt@toowoomba.qld.gov.au>
  * @author Toowoomba City Council Information Management Branch
