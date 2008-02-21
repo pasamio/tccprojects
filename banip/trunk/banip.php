@@ -46,13 +46,14 @@ class plgSystemBanIP extends JPlugin {
 		$message = $params->get('message','Your IP Address has been blocked');
 		define('BANIPMODE_BLACKLIST',0);
 		define('BANIPMODE_WHITELIST',1);
-		$mode = $params->get('mode',BANIPMODE_BLACKLIST);
+		$frontmode = $params->get('frontmode',BANIPMODE_BLACKLIST);
+		$backmode = $params->get('backmode',BANIPMODE_BLACKLIST);
 		$ip_list_front	= explode("\n", $params->get('ip_list_front',''));
 		$ip_list_back	= explode("\n", $params->get('ip_list_back', ''));
 		$app =& JFactory::getApplication();
 		$ip = $_SERVER['REMOTE_ADDR'];
 		if($app->isAdmin()) {
-			if($mode) {
+			if($backmode) {
 				// whitelist or die
 				if(in_array($ip,$ip_list_back)) {
 					return false;
@@ -75,7 +76,7 @@ class plgSystemBanIP extends JPlugin {
 				}
 			}
 		} else {
-		if($mode) {
+		if($frontmode) {
 				// whitelist or die
 				if(in_array($ip,$ip_list_front)) {
 					return false;

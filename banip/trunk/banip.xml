@@ -15,10 +15,15 @@
 	</files>
 		<params>
 			<param name="message" default="Your IP address has been blocked" type="text" size="50" label="Blocked Message" description="The message to be displayed to user"/>
-			<param name="mode" type="radio" default="0" label="Block Mode" description="Determines the mode to use when blocking users. Whitelist only ensures that only users on the white list are let in, black list only ensures that anyone but the blacklist are let in">
+			<param name="frontmode" type="radio" default="0" label="Site Block Mode" description="Determines the mode to use when blocking users. Whitelist only ensures that only users on the white list are let in, black list only ensures that anyone but the blacklist are let in">
 				<option value="0">Blacklist Only</option>
 				<option value="1">White List Only</option>
 			</param>
+			<param name="backmode" type="radio" default="0" label="Administrator Block Mode" description="Determines the mode to use when blocking users. Whitelist only ensures that only users on the white list are let in, black list only ensures that anyone but the blacklist are let in">
+				<option value="0">Blacklist Only</option>
+				<option value="1">White List Only</option>
+			</param>
+			
 			<param name="ip_list_front" default="" type="textarea" cols="30" rows="10" label="IP List Site" description="IP addresses or ranges for the front end/site (new line seperated)"/>
 			<param name="ip_list_back" default="" type="textarea" cols="30" rows="10" label="IP List Administrator" description="IP addresses or ranges for the backend end/administrator (new line seperated)"/>
 		</params>
