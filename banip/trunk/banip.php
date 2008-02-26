@@ -18,8 +18,6 @@
  */
 
 jimport('joomla.plugin.plugin');
-jimport('jauthtools.sso');
-jimport('jauthtools.usersource');
 
 /**
  * SSO Initiation
