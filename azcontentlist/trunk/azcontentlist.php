@@ -20,26 +20,27 @@
  * @see Joomla!Forge Project: http://forge.joomla.org
  */
 
-$cache =& mosCache::getCache( 'azcontentlist');
+$cache =& JFactory::getCache( 'azcontentlist');
 $cache->call('showAZList');
 function showAZList() {
-	$now = _CURRENT_SERVER_TIME;
-	$nullDate 	= $database->getNullDate();
-	$database->setQuery("SELECT * FROM #__content WHERE access = 0 AND state = 1"
-			. " AND ( publish_up = " . $database->Quote( $nullDate ) . " OR publish_up <= " . $database->Quote( $now ) . " )"
-			. " AND ( publish_down = " . $database->Quote( $nullDate ) . " OR publish_down >= " . $database->Quote( $now ) . " )"
-			. " ORDER BY title"
-	);
-	$results = $database->loadAssocList();
-	echo '<p class="componentheading">A-Z Site Map</p>';
-	echo '<ul>';
-	foreach($results as $result) {
-		$Itemid = $mainframe->getItemid( $result['id'] );
+        $date = new JDate();
+        $now = $date->toMySQL();
+        $database =& JFactory::getDBO();
+        $nullDate       = $database->getNullDate();
+        $database->setQuery("SELECT * FROM #__content WHERE access = 0 AND state = 1"
+                        . " AND ( publish_up = " . $database->Quote( $nullDate ) . " OR publish_up <= " . $database->Quote( $now ) . " )"
+                        . " AND ( publish_down = " . $database->Quote( $nullDate ) . " OR publish_down >= " . $database->Quote( $now ) . " )"
+                        . " ORDER BY title"
+        );
+        $results = $database->loadAssocList();
+        echo '<p class="componentheading">A-Z Site Map</p>';
+        echo '<ul>';
+        foreach($results as $result) {
+                $app =& JFactory::getApplication();
+                $Itemid = $app->getItemid( $result['id'] );
         if($Itemid) {
-			echo '<li><a href="index.php?option=com_content&task=view&id='. $result['id']. '&Itemid='.$Itemid.'">'. $result['title'] . '</a></li>';
+                        echo '<li><a href="index.php?option=com_content&task=view&id='. $result['id']. '&Itemid='.$Itemid.'">'. $result['title'] . '</a></li>';
         }
-	}
-	echo '</ul>';
+        }
+        echo '</ul>';
 }
-
-?>
