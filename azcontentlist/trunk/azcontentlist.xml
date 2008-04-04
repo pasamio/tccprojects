@@ -17,5 +17,8 @@
 	</files>
 	<administration>
 		<menu>AZ Content</menu>
+		<files>
+			<filename>admin.azcontentlist.php</filename>
+		</files>
 	</administration>
 </install>

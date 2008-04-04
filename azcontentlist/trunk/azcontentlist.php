@@ -27,7 +27,12 @@ function showAZList() {
         $now = $date->toMySQL();
         $database =& JFactory::getDBO();
         $nullDate       = $database->getNullDate();
-        $database->setQuery("SELECT * FROM #__content WHERE access = 0 AND state = 1"
+        $database->setQuery("SELECT c.title AS title, c.id, c.catid, c.sectionid, cc.title AS category, s.title AS section FROM #__content AS c"
+        				. ' LEFT JOIN #__categories AS cc ON cc.id = c.catid'
+				 		. ' LEFT JOIN #__sections AS s ON s.id = c.sectionid'
+						. " WHERE c.access = 0 AND c.state = 1"
+						. ' AND cc.access = 0'
+						. ' AND s.access = 0'
                         . " AND ( publish_up = " . $database->Quote( $nullDate ) . " OR publish_up <= " . $database->Quote( $now ) . " )"
                         . " AND ( publish_down = " . $database->Quote( $nullDate ) . " OR publish_down >= " . $database->Quote( $now ) . " )"
                         . " ORDER BY title"
@@ -36,11 +41,21 @@ function showAZList() {
         echo '<p class="componentheading">A-Z Site Map</p>';
         echo '<ul>';
         foreach($results as $result) {
-                $app =& JFactory::getApplication();
-                $Itemid = $app->getItemid( $result['id'] );
-        if($Itemid) {
-                        echo '<li><a href="index.php?option=com_content&task=view&id='. $result['id']. '&Itemid='.$Itemid.'">'. $result['title'] . '</a></li>';
-        }
+                //$app =& JFactory::getApplication();
+                //$Itemid = $app->getItemid( $result['id'] );
+				require_once JPATH_SITE.DS.'components'.DS.'com_content'.DS.'helpers'.DS.'route.php';
+		
+				$needles = array(
+					'article'  => (int) $result['id'],
+					'category' => (int) $result['catid'],
+					'section'  => (int) $result['sectionid'],
+				);
+		
+				$item	= ContentHelperRoute::_findItem($needles);
+				$Itemid	= is_object($item) ? $item->id : null;
+        		if($Itemid) {
+                        echo '<li><a href="index.php?option=com_content&task=view&id='. $result['id']. '&Itemid='.$Itemid.'">'. $result['title'] . '</a> ('. $result['section'].'\\'.$result['category'].')</li>';
+        		}
         }
         echo '</ul>';
 }
