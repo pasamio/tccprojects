@@ -20,6 +20,7 @@
  * @see Joomla!Forge Project: http://forge.joomla.org
  */
 
+jimport('joomla.utilities.date');
 $cache =& JFactory::getCache( 'azcontentlist');
 $cache->call('showAZList');
 function showAZList() {
