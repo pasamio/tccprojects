@@ -2,10 +2,10 @@
 <mosinstall type="component" version="1.0.0">
 	<name>AZ Content List</name>
 	<author>Sam Moffatt</author>
-	<authorEmail>S.Moffatt@toowoomba.qld.gov.au</authorEmail>
-	<authorUrl>www.toowoomba.qld.gov.au</authorUrl>	
+	<authorEmail>sam.moffatt@toowoombarc.qld.gov.au</authorEmail>
+	<authorUrl>www.toowoombarc.qld.gov.au</authorUrl>	
 	<creationDate>September 2006</creationDate>
-	<copyright>(C) 2006 Toowoomba City Council/Sam Moffatt All rights reserved.</copyright																			 >
+	<copyright>(C) 2008 Toowoomba Regional Council/Sam Moffatt All rights reserved.</copyright																			 >
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<version>1.0.0</version>
 	
