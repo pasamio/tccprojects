@@ -9,10 +9,10 @@
  * Created on Feb 21, 2008
  * 
  * @package BAN_IP
- * @author Sam Moffatt <S.Moffatt@toowoomba.qld.gov.au>
- * @author Toowoomba City Council Information Management Branch
+ * @author Sam Moffatt <sam.moffatt@toowoombarc.qld.gov.au>
+ * @author Toowoomba Regional Council Information Management Branch
  * @license GNU/GPL http://www.gnu.org/licenses/gpl.html
- * @copyright 2008 Toowoomba City Council/Sam Moffatt 
+ * @copyright 2008 Toowoomba Regional Council/Sam Moffatt 
  * @version SVN: $Id:$
  * @see JoomlaCode Project: http://joomlacode.org/gf/project/tccprojects
  */

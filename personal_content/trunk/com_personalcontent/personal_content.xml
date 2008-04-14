@@ -2,11 +2,11 @@
 <mosinstall type="component" version="1.0">
 	<name>Personal Content</name>
 	<creationDate>25/09/2006</creationDate>
-	<author>Sam Moffatt/Toowoomba City Council</author>
-	<copyright>(c) 2006 Sam Moffatt/Toowoomba City Council. All Rights Reserved</copyright>
+	<author>Sam Moffatt/Toowoomba Regional Council</author>
+	<copyright>(c) 2006 Sam Moffatt/Toowoomba Regional Council. All Rights Reserved</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
-	<authorEmail>S.Moffatt@toowoomba.qld.gov.au</authorEmail>
-	<authorUrl>www.toowoomba.qld.gov.au</authorUrl>
+	<authorEmail>sam.moffatt@toowoombarc.qld.gov.au</authorEmail>
+	<authorUrl>www.toowoombarc.qld.gov.au</authorUrl>
 	<version>1.0.2</version>
 	<description>This is the personal content manager for the personal content module.</description>
 	<files /><!-- add <filename>file</filename> here :D -->
