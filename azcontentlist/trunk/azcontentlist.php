@@ -10,14 +10,12 @@
  * Created on Feb 14, 2007
  * 
  * @package azcontentlist
- * @author Sam Moffatt <Sam.Moffatt@toowoomba.qld.gov.au>
- * @author Toowoomba City Council Information Management Branch
+ * @author Sam Moffatt <Sam.Moffatt@toowoombarc.qld.gov.au>
+ * @author Toowoomba Regional Council Information Management Branch
  * @license GNU/GPL http://www.gnu.org/licenses/gpl.html
- * @copyright 2007 Toowoomba City Council/Developer Name 
+ * @copyright 2008 Toowoomba Regional Council/Sam Moffatt 
  * @version SVN: $Id:$
- * @see Project Documentation DM Number: #???????
- * @see Gaza Documentation: http://gaza.toowoomba.qld.gov.au
- * @see Joomla!Forge Project: http://forge.joomla.org
+ * @see Joomla!Code Project: http://joomlacode.org/gf/project/tccprojects
  */
 
 jimport('joomla.utilities.date');
