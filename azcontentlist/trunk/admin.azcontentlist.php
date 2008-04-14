@@ -1,22 +1,21 @@
 <?php
 /**
- * Document Description
+ * A-Z Content Listing Tool
  * 
- * Document Long Description 
+ * This lists all published content items. 
  * 
- * PHP4/5
+ * PHP 4/5
+ * MySQL 4/5
  *  
- * Created on Apr 4, 2008
+ * Created on Feb 14, 2007
  * 
- * @package package_name
- * @author Your Name <author@toowoomba.qld.gov.au>
- * @author Toowoomba City Council Information Management Branch
+ * @package azcontentlist
+ * @author Sam Moffatt <Sam.Moffatt@toowoombarc.qld.gov.au>
+ * @author Toowoomba Regional Council Information Management Branch
  * @license GNU/GPL http://www.gnu.org/licenses/gpl.html
- * @copyright 2008 Toowoomba City Council/Developer Name 
+ * @copyright 2008 Toowoomba Regional Council/Sam Moffatt 
  * @version SVN: $Id:$
- * @see Project Documentation DM Number: #???????
- * @see Gaza Documentation: http://gaza.toowoomba.qld.gov.au
- * @see JoomlaCode Project: http://joomlacode.org/gf/project/
+ * @see Joomla!Code Project: http://joomlacode.org/gf/project/tccprojects
  */
  
 JToolbarHelper::title('A-Z Content List');
