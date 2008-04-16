@@ -24,7 +24,7 @@
 defined( '_VALID_MOS' ) or die( 'Restricted access' );
 
 /**
-* @package Joomla
+* @package Personal-Content
 * @subpackage Newsfeeds
 */
 class HTML_personalcontent {
