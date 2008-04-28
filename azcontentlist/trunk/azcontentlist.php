@@ -26,7 +26,8 @@ function showAZList() {
         $now = $date->toMySQL();
         $database =& JFactory::getDBO();
         $nullDate       = $database->getNullDate();
-        $database->setQuery("SELECT c.title AS title, c.id, c.catid, c.sectionid, cc.title AS category, s.title AS section FROM #__content AS c"
+        $database->setQuery('SELECT c.title AS title, c.id, c.catid, c.sectionid, cc.title AS category, s.title AS section, cc.alias AS cat_alias, c.alias AS alias'
+						. ' FROM #__content AS c'
         				. ' LEFT JOIN #__categories AS cc ON cc.id = c.catid'
 				 		. ' LEFT JOIN #__sections AS s ON s.id = c.sectionid'
 						. " WHERE c.access = 0 AND c.state = 1"
@@ -52,8 +53,10 @@ function showAZList() {
 		
 				$item	= ContentHelperRoute::_findItem($needles);
 				$Itemid	= is_object($item) ? $item->id : null;
+				
+				$link = 'index.php?option=com_content&view=article&id='. $result['id']. '%3A'.$result['alias'].'&Itemid='.$Itemid.'&catid='.$result['catid']. '%3A'.$result['cat_alias'];
         		if($Itemid) {
-                        echo '<li><a href="index.php?option=com_content&task=view&id='. $result['id']. '&Itemid='.$Itemid.'">'. $result['title'] . '</a> ('. $result['section'].'\\'.$result['category'].')</li>';
+                        echo '<li><a href="'. $link .'">'. $result['title'] . '</a> ('. $result['section'].'\\'.$result['category'].')</li>';
         		}
         }
         echo '</ul>';
