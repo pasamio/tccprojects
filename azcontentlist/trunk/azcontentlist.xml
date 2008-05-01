@@ -10,8 +10,8 @@
 	<version>1.5.1</version>
 	
 	<description>Quick component to list the contents of a site from A-Z</description>
-	<install />
-	<uninstall />
+
+	<update>http://sammoffatt.com.au/update/components/azcontentlist</update>
 	<files>
 		<filename>azcontentlist.php</filename>
 	</files>
