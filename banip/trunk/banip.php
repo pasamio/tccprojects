@@ -306,7 +306,7 @@ if(!class_exists('Net_IPv4')) {
 	        if (strchr($address, "/")) {
 	            $parts = explode("/", $address);
 	            if (! $myself->validateIP($parts[0])) {
-	                return PEAR::raiseError("invalid IP address");
+	                return JError::raiseError(42,"invalid IP address");
 	            }
 	            $myself->ip = $parts[0];
 	
@@ -324,7 +324,7 @@ if(!class_exists('Net_IPv4')) {
 	             */
 	            } else if (strchr($parts[1], ".")) {
 	                if (! $myself->validateNetmask($parts[1])) {
-	                    return PEAR::raiseError("invalid netmask value");
+	                    return JError::raiseError(42,"invalid netmask value");
 	                }
 	                $myself->netmask = $parts[1];
 	
@@ -339,7 +339,7 @@ if(!class_exists('Net_IPv4')) {
 	             *  Some unknown format of netmask was entered
 	             */
 	            } else {
-	                return PEAR::raiseError("invalid netmask value");
+	                return JError::raiseError(42,"invalid netmask value");
 	            }
 	            $myself->calculate();
 	            return $myself;
@@ -347,7 +347,7 @@ if(!class_exists('Net_IPv4')) {
 	            $myself->ip = $address;
 	            return $myself;
 	        } else {
-	            return PEAR::raiseError("invalid IP address");
+	            return JError::raiseError(42,"invalid IP address");
 	        }
 	    }
 	    
@@ -370,7 +370,7 @@ if(!class_exists('Net_IPv4')) {
 	
 	        if (! is_a($this, "net_ipv4")) {
 	            $myself = new Net_IPv4;
-	            return PEAR::raiseError("cannot calculate on uninstantiated Net_IPv4 class");
+	            return JError::raiseError(42,"cannot calculate on uninstantiated Net_IPv4 class");
 	        }
 	
 	        /* Find out if we were given an ip address in dot quad notation or
@@ -379,13 +379,13 @@ if(!class_exists('Net_IPv4')) {
 	         */
 	        if (strlen($this->ip)) {
 	            if (! $this->validateIP($this->ip)) {
-	                return PEAR::raiseError("invalid IP address");
+	                return JError::raiseError(42,"invalid IP address");
 	            }
 	            $this->long = $this->ip2double($this->ip);
 	        } else if (is_numeric($this->long)) {
 	            $this->ip = long2ip($this->long);
 	        } else {
-	           return PEAR::raiseError("ip address not specified");
+	           return JError::raiseError(42,"ip address not specified");
 	        }
 	
 	        /*
@@ -398,7 +398,7 @@ if(!class_exists('Net_IPv4')) {
 	            $validNM_rev = array_flip($validNM);
 	            $this->bitmask = $validNM_rev[$this->netmask];
 	        } else {
-	            return PEAR::raiseError("netmask or bitmask are required for calculation");
+	            return JError::raiseError(42,"netmask or bitmask are required for calculation");
 	        }
 	        $this->network = long2ip(ip2long($this->ip) & ip2long($this->netmask));
 	        $this->broadcast = long2ip(ip2long($this->ip) |
@@ -411,7 +411,7 @@ if(!class_exists('Net_IPv4')) {
 	    
 		function getNetmask($length)
 		{
-			if (! PEAR::isError($ipobj = Net_IPv4::parseAddress("0.0.0.0/" . $length))) {
+			if (! JError::isError($ipobj = Net_IPv4::parseAddress("0.0.0.0/" . $length))) {
 				$mask = $ipobj->netmask;
 				unset($ipobj);
 				return $mask;
@@ -424,7 +424,7 @@ if(!class_exists('Net_IPv4')) {
 	
 		function getNetLength($netmask)
 		{
-			if (! PEAR::isError($ipobj = Net_IPv4::parseAddress("0.0.0.0/" . $netmask))) {
+			if (! JError::isError($ipobj = Net_IPv4::parseAddress("0.0.0.0/" . $netmask))) {
 				$bitmask = $ipobj->bitmask;
 				unset($ipobj);
 				return $bitmask;
@@ -437,7 +437,7 @@ if(!class_exists('Net_IPv4')) {
 	    
 		function getSubnet($ip, $netmask)
 		{
-			if (! PEAR::isError($ipobj = Net_IPv4::parseAddress($ip . "/" . $netmask))) {
+			if (! JError::isError($ipobj = Net_IPv4::parseAddress($ip . "/" . $netmask))) {
 				$net = $ipobj->network;
 				unset($ipobj);
 				return $net;
@@ -452,14 +452,14 @@ if(!class_exists('Net_IPv4')) {
 		{
 			if (! is_object($ip1) || strcasecmp(get_class($ip1), 'net_ipv4') <> 0) {
 				$ipobj1 = Net_IPv4::parseAddress($ip1);
-				if (PEAR::isError($ipobj)) {
-	                return PEAR::raiseError("IP addresses must be an understood format or a Net_IPv4 object");
+				if (JError::isError($ipobj)) {
+	                return JError::raiseError(42,"IP addresses must be an understood format or a Net_IPv4 object");
 				}
 			}
 			if (! is_object($ip2) || strcasecmp(get_class($ip2), 'net_ipv4') <> 0) {
 				$ipobj2 = Net_IPv4::parseAddress($ip2);
-				if (PEAR::isError($ipobj)) {
-	                return PEAR::raiseError("IP addresses must be an understood format or a Net_IPv4 object");
+				if (JError::isError($ipobj)) {
+	                return JError::raiseError(42,"IP addresses must be an understood format or a Net_IPv4 object");
 				}
 			}
 			if ($ipobj1->network == $ipobj2->network &&
