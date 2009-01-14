@@ -74,7 +74,7 @@ class plgSystemBanIP extends JPlugin {
 				}
 			}
 		} else {
-		if($frontmode) {
+			if($frontmode) {
 				// whitelist or die
 				if(in_array($ip,$ip_list_front)) {
 					return false;
