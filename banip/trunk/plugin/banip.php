@@ -34,22 +34,33 @@ class plgSystemBanIP extends JPlugin {
 	 * @param object $subject The object to observe
 	 * @since 1.5
 	 */
-	function plgSystemBanIP(& $subject) {
-		parent :: __construct($subject);
+	function plgSystemBanIP(& $subject, $config) {
+		parent :: __construct($subject, $config);
+	}
+	
+	function killapp() {
+		$message = $this->params->get('message','Your IP Address has been blocked');
+		$redirect_location = $this->params->get('redirect_location', '');
+		$app =& JFactory::getApplication();
+		if(!empty($redirect_location)) {
+			$app->redirect($redirect_location);
+			$app->close();
+		} else {
+			echo $message;
+			$app->close();
+		}
 	}
 
 	function onAfterInitialise() {
-		$plugin = & JPluginHelper :: getPlugin('system', 'banip');
-		$params = new JParameter($plugin->params);
-		$message = $params->get('message','Your IP Address has been blocked');
 		define('BANIPMODE_BLACKLIST',0);
 		define('BANIPMODE_WHITELIST',1);
-		$frontmode = $params->get('frontmode',BANIPMODE_BLACKLIST);
-		$backmode = $params->get('backmode',BANIPMODE_BLACKLIST);
-		$ip_list_front	= explode("\n", $params->get('ip_list_front',''));
-		$ip_list_back	= explode("\n", $params->get('ip_list_back', ''));
+		$frontmode = $this->params->get('frontmode',BANIPMODE_BLACKLIST);
+		$backmode = $this->params->get('backmode',BANIPMODE_BLACKLIST);
+		$ip_list_front	= explode("\n", $this->params->get('ip_list_front',''));
+		$ip_list_back	= explode("\n", $this->params->get('ip_list_back', ''));
 		$app =& JFactory::getApplication();
 		$ip = $_SERVER['REMOTE_ADDR'];
+		
 		if($app->isAdmin()) {
 			if($backmode) {
 				// whitelist or die
@@ -61,15 +72,15 @@ class plgSystemBanIP extends JPlugin {
 						if(Net_IPv4::ipInNetwork($ip,$range)) return false;
 					}
 				}
-				die($message);
+				$this->killapp($message);
 			} else {
 				// blacklist and die
 				if(in_array($ip,$ip_list_back)) {
-					die($message);
+					$this->killapp($message);
 				}
 				foreach($ip_list_back as $range) {
 					if(strstr($range,'/')) {
-						if(Net_IPv4::ipInNetwork($ip, $range)) die($message);
+						if(Net_IPv4::ipInNetwork($ip, $range)) $this->killapp($message);
 					}
 				}
 			}
@@ -84,15 +95,15 @@ class plgSystemBanIP extends JPlugin {
 						if(Net_IPv4::ipInNetwork($ip,$range)) return false;
 					}
 				}
-				die($message);
+				$this->killapp($message);
 			} else {
 				// blacklist and die or false
 				if(in_array($ip,$ip_list_front)) {
-					die($message);
+					$this->killapp($message);
 				}
 				foreach($ip_list_front as $range) {
 					if(strstr($range,'/')) {
-						if(Net_IPv4::ipInNetwork($ip, $range)) die($message);
+						if(Net_IPv4::ipInNetwork($ip, $range)) $this->killapp($message);
 					}
 				}
 			}
