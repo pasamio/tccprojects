@@ -72,15 +72,15 @@ class plgSystemBanIP extends JPlugin {
 						if(Net_IPv4::ipInNetwork($ip,$range)) return false;
 					}
 				}
-				$this->killapp($message);
+				$this->killapp();
 			} else {
 				// blacklist and die
 				if(in_array($ip,$ip_list_back)) {
-					$this->killapp($message);
+					$this->killapp();
 				}
 				foreach($ip_list_back as $range) {
 					if(strstr($range,'/')) {
-						if(Net_IPv4::ipInNetwork($ip, $range)) $this->killapp($message);
+						if(Net_IPv4::ipInNetwork($ip, $range)) $this->killapp();
 					}
 				}
 			}
@@ -95,15 +95,15 @@ class plgSystemBanIP extends JPlugin {
 						if(Net_IPv4::ipInNetwork($ip,$range)) return false;
 					}
 				}
-				$this->killapp($message);
+				$this->killapp();
 			} else {
 				// blacklist and die or false
 				if(in_array($ip,$ip_list_front)) {
-					$this->killapp($message);
+					$this->killapp();
 				}
 				foreach($ip_list_front as $range) {
 					if(strstr($range,'/')) {
-						if(Net_IPv4::ipInNetwork($ip, $range)) $this->killapp($message);
+						if(Net_IPv4::ipInNetwork($ip, $range)) $this->killapp();
 					}
 				}
 			}
