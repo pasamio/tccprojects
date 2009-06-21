@@ -14,7 +14,8 @@
 		<filename plugin="banip">banip.php</filename>
 	</files>
 		<params>
-			<param name="message" default="Your IP address has been blocked" type="text" size="50" label="Blocked Message" description="The message to be displayed to user"/>
+			<param name="message" default="Your IP address has been blocked" type="text" size="50" label="Blocked Message" description="The message to be displayed to user if a redirect location isn't set"/>
+			<param name="redirect_location" default="" type="text" size="50" label="Redirect Location" description="The full path to a location to redirect the user to instead of displaying a message; note: do not set this to a Joomla! location as this will cause a redirect loop"/>
 			<param name="frontmode" type="radio" default="0" label="Site Block Mode" description="Determines the mode to use when blocking users. Whitelist only ensures that only users on the white list are let in, black list only ensures that anyone but the blacklist are let in">
 				<option value="0">Blacklist Only</option>
 				<option value="1">White List Only</option>
