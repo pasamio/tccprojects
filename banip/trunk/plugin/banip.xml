@@ -3,10 +3,10 @@
 	<name>System - Ban IP Address</name>
 	<author>Sam Moffatt</author>
 	<creationDate>February 2008</creationDate>
-	<copyright>(C) 2008 Toowoomba Regional Council/Sam Moffatt. All rights reserved.</copyright>
+	<copyright>(C) 2009 Sam Moffatt</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
-	<authorEmail>sam.moffatt@toowoombarc.qld.gov.au</authorEmail>
-	<authorUrl>www.toowoombarc.qld.gov.au</authorUrl>
+	<authorEmail>pasamio@gmail.com</authorEmail>
+	<authorUrl>pasamio.com</authorUrl>
 	<version id="3">1.5.2</version>
 	<update>http://www.jsitepoint.com/update/plugins/plgsystembanip</update>
 	<description>Blocks users based on network masks or IP addresses</description>
