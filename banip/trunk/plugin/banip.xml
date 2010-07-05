@@ -8,7 +8,9 @@
 	<authorEmail>pasamio@gmail.com</authorEmail>
 	<authorUrl>pasamio.com</authorUrl>
 	<version id="4">1.5.3</version>
-	<update>http://www.jsitepoint.com/update/plugins/plgsystembanip</update>
+	<updateservers>
+		<server type="extension" priority="1" name="Ban IP Address/Range Update Site">http://www.jsitepoint.com/update/plugins/plgsystembanip/extension.xml</server>
+	</updateservers>
 	<description>Blocks users based on network masks or IP addresses</description>
 	<files>
 		<filename plugin="banip">banip.php</filename>
