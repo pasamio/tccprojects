@@ -9,19 +9,31 @@
  * Created on Feb 21, 2008
  * 
  * @package BAN_IP
- * @author Sam Moffatt <sam.moffatt@toowoombarc.qld.gov.au>
- * @author Toowoomba Regional Council Information Management Branch
+ * @author Sam Moffatt <pasamio@gmail.com>
  * @license GNU/GPL http://www.gnu.org/licenses/gpl.html
- * @copyright 2008 Toowoomba Regional Council/Sam Moffatt 
+ * @copyright 2010 Sam Moffatt 
  * @version SVN: $Id:$
- * @see JoomlaCode Project: http://joomlacode.org/gf/project/tccprojects
+ * @see JoomlaCode Project: http://joomlacode.org/gf/project/pasamioprojects
+ 
+SQL:
+CREATE TABLE `#__banip_entries` (
+  `entry` varchar(30) NOT NULL,
+  `type` INT NOT NULL,
+  `client` INT NOT NULL,
+  PRIMARY KEY (`entry`, `type`, `client`)
+)
+CHARACTER SET utf8
+COMMENT = 'Ban IP Address/Range'; 
  */
 
 jimport('joomla.plugin.plugin');
 
+define('BANIPMODE_BLACKLIST',0);
+define('BANIPMODE_WHITELIST',1);
+
 /**
- * SSO Initiation
- * Kicks off SSO Authentication
+ * Ban IP Address/Range
+ * Locks people out :D
  */
 class plgSystemBanIP extends JPlugin {
 	/**
@@ -38,6 +50,9 @@ class plgSystemBanIP extends JPlugin {
 		parent :: __construct($subject, $config);
 	}
 	
+	/**
+	 * Kills the application
+	 */
 	function killapp() {
 		$message = $this->params->get('message','Your IP Address has been blocked');
 		$redirect_location = $this->params->get('redirect_location', '');
@@ -51,64 +66,194 @@ class plgSystemBanIP extends JPlugin {
 		}
 	}
 
+	/**
+	 * Runs very early on
+	 */
 	function onAfterInitialise() {
-		define('BANIPMODE_BLACKLIST',0);
-		define('BANIPMODE_WHITELIST',1);
-		$frontmode = $this->params->get('frontmode',BANIPMODE_BLACKLIST);
-		$backmode = $this->params->get('backmode',BANIPMODE_BLACKLIST);
-		$ip_list_front	= explode("\n", $this->params->get('ip_list_front',''));
-		$ip_list_back	= explode("\n", $this->params->get('ip_list_back', ''));
+		$ip = JRequest::getVar('REMOTE_ADDR', '', 'SERVER');
+
+		// check we have an IP, this shouldn't ever be hit but you never know...
+		if(!strlen($ip)) {
+			return true;
+		}
+		
 		$app =& JFactory::getApplication();
-		$ip = $_SERVER['REMOTE_ADDR'];
+		$use_table = (int)$this->params->get('use_table', 0);
+
+		$frontmode = $this->params->get('frontmode', BANIPMODE_BLACKLIST);
+		$backmode = $this->params->get('backmode', BANIPMODE_BLACKLIST);
 		
 		if($app->isAdmin()) {
-			if($backmode) {
-				// whitelist or die
-				if(in_array($ip,$ip_list_back)) {
-					return false;
-				}
-				foreach($ip_list_back as $range) {
-					if(strstr($range,'/')) {
-						if(Net_IPv4::ipInNetwork($ip,$range)) return false;
-					}
-				}
-				$this->killapp();
+			if($use_table) {
+				$this->tableBlockAdmin($ip, $backmode);
 			} else {
-				// blacklist and die
-				if(in_array($ip,$ip_list_back)) {
-					$this->killapp();
+				$this->paramsBlockAdmin($ip, $backmode);
+			}
+		} else {
+			if($use_table) {
+				$this->tableBlockSite($ip, $frontmode);
+			} else {
+				$this->paramsBlockSite($ip, $frontmode);
+			}
+		}
+	}
+	
+	/**
+	 * Handle blocking the site via params
+	 */
+	function paramsBlockSite($ip, $frontmode) {
+		$ip_list_front	= explode("\n", $this->params->get('ip_list_front',''));
+		
+		if($frontmode) {
+			// whitelist or die
+			if(in_array($ip,$ip_list_front)) {
+				return false;
+			}
+			foreach($ip_list_front as $range) {
+				$range = trim($range);
+				if(!strlen($range)) {
+					continue;
 				}
-				foreach($ip_list_back as $range) {
+				if($range[0] != '#') {
 					if(strstr($range,'/')) {
-						if(Net_IPv4::ipInNetwork($ip, $range)) $this->killapp();
+						if(Net_IPv4::ipInNetwork($ip,$range)) {
+							return false;
+						}
 					}
 				}
 			}
+			$this->killapp();
 		} else {
-			if($frontmode) {
-				// whitelist or die
-				if(in_array($ip,$ip_list_front)) {
-					return false;
+			// blacklist and die or false
+			if(in_array($ip,$ip_list_front)) {
+				$this->killapp();
+			}
+			foreach($ip_list_front as $range) {
+				$range = trim($range);
+				if(!strlen($range)) {
+					continue;
 				}
-				foreach($ip_list_front as $range) {
+				if($range[0] != '#') {
 					if(strstr($range,'/')) {
-						if(Net_IPv4::ipInNetwork($ip,$range)) return false;
+						if(Net_IPv4::ipInNetwork($ip, $range)) {
+							$this->killapp();
+						}
 					}
 				}
-				$this->killapp();
-			} else {
-				// blacklist and die or false
-				if(in_array($ip,$ip_list_front)) {
-					$this->killapp();
+			}
+		}
+	
+	}
+	
+	/**
+	 * Handles blocking the admin via params
+	 */
+	function paramsBlockAdmin($ip, $backmode) {
+		$ip_list_back	= explode("\n", $this->params->get('ip_list_back', ''));
+		
+		if($backmode) {
+			// whitelist or die
+			if(in_array($ip,$ip_list_back)) {
+				return false;
+			}
+			foreach($ip_list_back as $range) {
+				$range = trim($range);
+				if(!strlen($range)) {
+					continue;
 				}
-				foreach($ip_list_front as $range) {
+				if($range[0] != '#') {
 					if(strstr($range,'/')) {
-						if(Net_IPv4::ipInNetwork($ip, $range)) $this->killapp();
+						if(Net_IPv4::ipInNetwork($ip,$range)) {
+							return false;
+						}
+					}
+				}
+			}
+			$this->killapp();
+		} else {
+			// blacklist and die
+			if(in_array($ip,$ip_list_back)) {
+				$this->killapp();
+			}
+			foreach($ip_list_back as $range) {
+				$range = trim($range);
+				if(!strlen($range)) {
+					continue;
+				}
+				if($range[0] != '#') {
+					if(strstr($range,'/')) {
+						if(Net_IPv4::ipInNetwork($ip, $range)) {
+							$this->killapp();
+						}
 					}
 				}
 			}
 		}
 	}
+	
+	/**
+	 * Handles blocking the admin via table
+	 */
+	function tableBlockAdmin($ip, $frontmode) {
+		$dbo =& JFactory::getDBO();
+		$dbo->setQuery('SELECT COUNT(*) FROM #__banip_entries WHERE client = 1 AND type = 1 AND entry = '. $dbo->Quote($ip));	
+		$result = $dbo->loadResult();
+		if($result && $frontmode == BANIPMODE_BLACKLIST) {
+			$this->killapp();	
+		} else if($result && $frontmode == BANIPMODE_WHITELIST) {
+			return true;
+		}
+		// check if its a match for this mode
+		if($this->checkRange($ip, 1, $frontmode)) {
+			$this->killapp();	
+		}
+	}
+	
+	/**
+	 * Handles blocking the site via table
+	 */
+	function tableBlockSite($ip, $backmode) {
+		$dbo =& JFactory::getDBO();
+		$dbo->setQuery('SELECT COUNT(*) FROM #__banip_entries WHERE client = 0 AND type = 1 AND entry = '. $dbo->Quote($ip));	
+		$result = $dbo->loadResult();
+		if($result && $backmode == BANIPMODE_BLACKLIST) {
+			$this->killapp();	
+		} else if($result && $backmode == BANIPMODE_WHITELIST) {
+			return true;
+		}
+		// check if its a match for this mode
+		if($this->checkRange($ip, 0, $backmode)) {
+			$this->killapp();	
+		}
+	}
+	
+	/**
+	 * Checks the table if an item is an a range
+	 */
+	function checkRange($ip, $client, $mode) {
+		$dbo =& JFactory::getDBO();
+		$dbo->setQuery('SELECT entry FROM #__banip_entries WHERE client = '. $client .' AND type = 2');
+		$results = $dbo->loadAssocList();
+		if(!count($results)) { // if we have no results...
+			return $mode;	
+		}
+		foreach($results as $range) {
+			if(strstr($range,'/')) {
+				if(Net_IPv4::ipInNetwork($ip, $range)) {
+					if($mode) { // white list, so return false
+						return false;
+					} else { // black list, so return true
+						return true;
+					}
+				}
+			}
+		}
+		// ok, in blacklist mode (0), we didn't find any results, so we return false or zero
+		// so, in whitelist mode (1), we didn't find any results, so we return true or zero
+		return $mode;
+	}
+	
+	
 }
 
 if(!class_exists('Net_IPv4')) {
@@ -325,7 +470,7 @@ if(!class_exists('Net_IPv4')) {
 	            /*
 	             *  a hexadecimal string was entered
 	             */
-	            if (eregi("^([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$", $parts[1], $regs)) {
+	            if (preg_match('/^([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/', $parts[1], $regs)) {
 	                // hexadecimal string
 	                $myself->netmask = hexdec($regs[1]) . "." .  hexdec($regs[2]) . "." .
 	                    hexdec($regs[3]) . "." .  hexdec($regs[4]);
@@ -507,7 +652,7 @@ if(!class_exists('Net_IPv4')) {
 	     */
 	    function htoa($addr)
 	    {
-	        if (eregi("^([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$",
+	        if (preg_match('/^([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/',
 	                    $addr, $regs)) {
 	            return hexdec($regs[1]) . "." .  hexdec($regs[2]) . "." .
 	                   hexdec($regs[3]) . "." .  hexdec($regs[4]);
